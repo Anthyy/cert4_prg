@@ -1,37 +1,58 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
-    // Declaration
     public enum State
     {
         Patrol = 0,
         Seek = 1
     }
 
+    public NavMeshAgent agent;
     public State currentState = State.Patrol;
     public Transform target;
     public float seekRadius = 5f;
-
     public Transform waypointParent;
-    public float moveSpeed;
-    public float stoppingDistance = 1f;
-
+    
     // Creates a collection of Transforms
+    private Transform currentPoint;
     private Transform[] waypoints;
     private int currentIndex = 1;
-    
-    // CTRL + M + O (Fold Code)
-    // CTRL + M + P (UnFold Code)
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, seekRadius);
+
+        switch (currentState)
+        {
+            case State.Patrol:
+                if (currentPoint)
+                {
+                    Gizmos.color = Color.cyan;
+                    Gizmos.DrawWireSphere(currentPoint.position, agent.stoppingDistance);
+                }
+                break;
+            case State.Seek:
+                if(target)
+                {
+                    Gizmos.color = Color.cyan;
+                    Gizmos.DrawWireSphere(target.position, agent.stoppingDistance);
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
     void Patrol()
     {
-        Transform point = waypoints[currentIndex];
+        currentPoint = waypoints[currentIndex];
         
-        float distance = Vector3.Distance(transform.position, point.position);
-        if(distance < stoppingDistance)
+        float distance = Vector3.Distance(transform.position, currentPoint.position);
+        if(distance < agent.stoppingDistance)
         {
             // currentIndex = currentIndex + 1
             currentIndex++;
@@ -40,8 +61,9 @@ public class Enemy : MonoBehaviour
                 currentIndex = 1;
             }
         }
-        transform.position = Vector3.MoveTowards(transform.position, point.position, moveSpeed);
-
+        
+        agent.SetDestination(currentPoint.position);
+        
         float distToTarget = Vector3.Distance(transform.position, target.position);
         if(distToTarget < seekRadius)
         {
@@ -51,7 +73,8 @@ public class Enemy : MonoBehaviour
     
     void Seek()
     {
-        transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed);
+        agent.SetDestination(target.position);
+
         float distToTarget = Vector3.Distance(transform.position, target.position);
         if (distToTarget > seekRadius)
         {
@@ -61,8 +84,7 @@ public class Enemy : MonoBehaviour
 
     // Use this for initialization
     void Start()
-    {
-        
+    {        
         // Getting children of waypointParent
         waypoints = waypointParent.GetComponentsInChildren<Transform>();
     }
