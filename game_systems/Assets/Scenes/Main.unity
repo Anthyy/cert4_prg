@@ -1160,6 +1160,10 @@ Prefab:
       propertyPath: lookObjects.Array.data[3]
       value: 
       objectReference: {fileID: 1124738807}
+    - target: {fileID: 1473796733376410, guid: 9be8aad36b6c34f4d9a6c60f97366b82, type: 2}
+      propertyPath: m_Name
+      value: CameraSwap
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9be8aad36b6c34f4d9a6c60f97366b82, type: 2}
   m_IsPrefabAsset: 0
@@ -1344,6 +1348,10 @@ Prefab:
     - target: {fileID: 1156505899959988, guid: 55376e99787cc644ab8ed925ba96c6c1, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1185345434065454, guid: 55376e99787cc644ab8ed925ba96c6c1, type: 2}
+      propertyPath: m_Name
+      value: CameraSurveillance
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55376e99787cc644ab8ed925ba96c6c1, type: 2}
@@ -1634,6 +1642,10 @@ Prefab:
     - target: {fileID: 1646099579284724, guid: 3530972869db2374480a4a00b1961800, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1646099579284724, guid: 3530972869db2374480a4a00b1961800, type: 2}
+      propertyPath: m_Name
+      value: CameraOrbit
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3530972869db2374480a4a00b1961800, type: 2}
