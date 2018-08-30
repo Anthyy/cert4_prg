@@ -7,6 +7,7 @@ namespace SteeringBehaviours
 {
     public class AIAgent : MonoBehaviour
     {
+        // Reference to agent component
         public NavMeshAgent agent;
 
         private Vector3 point = Vector3.zero;
@@ -14,8 +15,10 @@ namespace SteeringBehaviours
         // Update is called once per frame
         void Update()
         {
+            // If there is a point set
             if (point.magnitude > 0)
             {
+                // Set the agent's destination to that point
                 agent.SetDestination(point);
             }
         }

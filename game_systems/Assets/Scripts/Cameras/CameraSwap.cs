@@ -4,64 +4,78 @@ using UnityEngine;
 
 public class CameraSwap : MonoBehaviour
 {
-    // Highly modified version of the Smooth LookAt Script 
-    // So you can change the object your looking at by clicking a button 	
-    public Transform[] LookObjects;
-    public int CamNum;
-    public int MaxCam = 1;
-    // all of these int's just change the size and position of the GUI button 
-    public int x = 1;
-    public int y = 1;
-    public int b = 1;
-    public int c = 1;
+    public Transform[] lookObjects;     // Array of objects to look at
+    public bool smooth = true;          // Is smoothing enabled?
+    public float damping = 6;           // Smoothness value of camera
+    
+    [Header("GUI Button")]
+    public int x = 10;
+    public int y = 70;
+    public int width = 50;          
+    public int height = 30;
 
-    public float damping = 6;
-    public bool smooth = true;
-
-    private Transform target;
+    private int camIndex;               // Index into array of lookObjects
+    private int camMax;                 // Stores the total amount of lookObjects
+    private Transform target;           // Current target look object
     
     void Start()
     {
-        MaxCam = LookObjects.Length - 1;
+        // Last index of array = Array.Length - 1
+        camMax = lookObjects.Length - 1;
     }
 
     void LateUpdate()
     {
-        target = LookObjects[CamNum];
+        // Get current object to look at
+        target = lookObjects[camIndex];
 
+        // If target is not null
         if (target)
         {
+            // Is smoothing enabled?
             if (smooth)
             {
+                // Calculate direction to look at target
+                Vector3 lookDirection = target.position - transform.position;
+                Quaternion rotation = Quaternion.LookRotation(lookDirection);
                 // Look at and dampen the rotation
-                var rotation = Quaternion.LookRotation(target.position - transform.position);
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * damping);
             }
             else
             {
-                // Just lookat
+                // Just look at the target (without dampen)
                 transform.LookAt(target);
             }
+        }
+        else
+        {
+            // Keep swapping cameras until a valid target is found
+            CamSwap();
         }
     }
 
     // Use this for initialization
     void CamSwap()
     {
-        if (CamNum >= MaxCam)
+        // If camIndex exceeds array size
+        if (camIndex >= camMax)
         {
-            CamNum = 0;
+            // Reset camIndex back to zero
+            camIndex = 0;
         }
         else
         {
-            CamNum++;
+            // Increase camIndex to next look object
+            camIndex++;
         }
     }
 
     void OnGUI()
     {
-        if (GUI.Button(new Rect(10 * x, 70 * y, 50 * b, 30 * c), "Swap"))
+        // Render a button to the screen & check if it's pressed
+        if (GUI.Button(new Rect(x, y, width, height), "Swap"))
         {
+            // Swap the cameras
             CamSwap();
         }
     }
