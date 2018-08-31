@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Move : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
+    public bool rotateToMainCamera = false;
+    public bool rotateWeapon = false;
+    public Transform weapon;
+
     public float moveSpeed = 5f;
     public float jumpHeight = 10f;
     public Rigidbody rigid;
@@ -37,9 +41,15 @@ public class Move : MonoBehaviour
 
         Vector3 moveDir = new Vector3(inputH, 0f, inputV);
 
+        // Get the euler angles of Camera
         Vector3 camEuler = Camera.main.transform.eulerAngles;
-        moveDir = Quaternion.AngleAxis(camEuler.y, Vector3.up) * moveDir;
 
+        // Is the controller rotating to camera?
+        if (rotateToMainCamera)
+        {
+            // Calculate the new move direction by only taking into account the Y Axis
+            moveDir = Quaternion.AngleAxis(camEuler.y, Vector3.up) * moveDir;
+        }
 
         Vector3 force = new Vector3(moveDir.x, rigid.velocity.y, moveDir.z);
         
@@ -50,9 +60,20 @@ public class Move : MonoBehaviour
 
         rigid.velocity = force;
 
-        if (moveDir.magnitude > 0)
+        //if (moveDir.magnitude > 0)
+        //{
+        //    transform.rotation = Quaternion.LookRotation(moveDir);
+        //}
+        
+        // TESTING!
+
+        Quaternion playerRotation = Quaternion.AngleAxis(camEuler.y, Vector3.up);
+        transform.rotation = playerRotation;
+
+        if(rotateWeapon)
         {
-            transform.rotation = Quaternion.LookRotation(moveDir);
+            Quaternion weaponRotation = Quaternion.AngleAxis(camEuler.x, Vector3.right);
+            weapon.localRotation = weaponRotation;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Intro
         public State currentState = State.Patrol;
         public Transform target;
         public float seekRadius = 5f;
-
+        
         public Transform waypointParent;
         public float moveSpeed;
         public float stoppingDistance = 1f;

@@ -7,7 +7,7 @@ public class CameraOrbit : MonoBehaviour
     public Transform target;                        // Target object to orbit around
     public bool hideCursor = true;                  // Is the cursor hidden?
     [Header("Orbit")]
-    public Vector3 offset = new Vector3(0, 5f, 0);  // Vector offset from original position
+    public Vector3 offset = new Vector3(0, 0, 0);  // Vector offset from original position
     public float xSpeed = 120.0f;                   // X orbit speed
     public float ySpeed = 120.0f;                   // Y orbit speed
     public float yMinLimit = -20f;                  // minimum Y limit

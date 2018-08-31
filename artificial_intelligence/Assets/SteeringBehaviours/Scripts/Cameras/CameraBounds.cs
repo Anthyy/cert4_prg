@@ -14,7 +14,7 @@ public class CameraBounds : MonoBehaviour
         // Get bounds position
         Vector3 pos = transform.position;
         Vector3 halfSize = size * 0.5f;
-
+        
         if(incomingPos.z > pos.z + halfSize.z)
         {
             incomingPos.z = pos.z + halfSize.z;
